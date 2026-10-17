@@ -2,6 +2,8 @@
 __pycache__/
 *.py[cod]
 
+tests/__pycache__/
+
 # Pytest cache
 .pytest_cache/
 

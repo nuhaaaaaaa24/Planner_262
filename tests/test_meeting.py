@@ -14,7 +14,7 @@ from logic.Organization import Organization
 
 @pytest.fixture
 def org():
-    return Organization
+    return Organization()
 
 # Create the constructor
 class TestMeetingConstructor:
