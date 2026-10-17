@@ -22,6 +22,7 @@ from logic.ConflictException import ConflictsException
 def person():
     return Person("Alice") # we only test one person right now
 
+# helper to create a meeting
 def meeting(month=5, day=10, start=3, end=5, desc="m", **kw):
     return Meeting(month, day, start, end, description=desc, **kw)
 

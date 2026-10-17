@@ -19,7 +19,7 @@ from logic.ConflictException import ConflictsException
 def room():
     return Room("JOI.230") # we only test one room right now
 
-# define a meeting date
+# helper to create a meeting
 def meeting(month=5, day=10, start=9, end=11, desc="m"):
     return(Meeting(month, day, start, end, description=desc))
 
