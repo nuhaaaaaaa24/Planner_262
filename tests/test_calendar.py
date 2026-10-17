@@ -373,7 +373,7 @@ class TestCalendarPrintAgenda:
     def test_agenda_for_missing_month(self, calendar):
         assert calendar.print_agenda(99, 1) == "No Meetings booked on this date.\n\n"
 
-    # UT94: Test that a missing month returns an empty agenda
+    # UT94: Test that a missing day returns an empty agenda
     # Expected outcome: Agenda is empty
     # Note that the client may prefer to intercept incorrect day values such as
     # the one used for this test.
