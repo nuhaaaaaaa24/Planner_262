@@ -70,7 +70,7 @@ class TestCheckTimes:
     # Expected outcome: Return ConflictsException
     @pytest.mark.parametrize("month", [0, -3])
     def test_month_too_small(self, month):
-        with pytest.raises(ConflictsException, match="Day does not exist"):
+        with pytest.raises(ConflictsException, match="Month does not exist"):
             Calendar.check_times(month, 10, 9, 10)
 
     # UT54: Test that checks if invalid months above 12 are allowed
@@ -171,7 +171,7 @@ class TestAddMeeting:
         with pytest.raises(ConflictsException) as exc:
             calendar.add_meeting(meeting(start=10, end=14, desc="Meeting two for overlap test"))
 
-        assert "Overlap with another item - Meeting two for overlap test" in str(exc.value)
+        assert "Overlap with another item - Meeting one for overlap test" in str(exc.value)
         assert len(calendar.occupied[5][10]) == 1 
 
     # UT68: Test for overlapping meetings (end overlaps)
@@ -180,14 +180,6 @@ class TestAddMeeting:
         calendar.add_meeting(meeting(start=10, end=12, desc="first meeting"))
         with pytest.raises(ConflictsException, match="Overlap"):
             calendar.add_meeting(meeting(start=8, end=11, desc="second meeting"))
-
-    # UT69: Test for overlapping meetings (either start or end)   
-    # Expected outcome: Overlapping meetings are rejected
-    @pytest.mark.parametrize("start, end", [(9, 9), (12, 13), (8, 9)]) 
-    def test_boundary_touching_counts_as_conflict(self, calendar, start, end):
-        calendar.add_meeting(meeting(start=9, end=12))
-        with pytest.raises(ConflictsException):
-            calendar.add_meeting(meeting(start=start, end=end))
 
     # UT69: Test for adjacent meetings
     # Expected outcome: Adjacent meetings are allowed
@@ -231,7 +223,7 @@ class TestAddMeeting:
         assert calendar.occupied[5][10] == [m]
 
     # UT74: Test for missing days (TRUE branch of if m_month not in self_occupied[m_month])
-    # Expected outcome: Missing months must exist or be re-created
+    # Expected outcome: Missing days must exist or be re-created
     def test_missing_day_is_created(self, calendar):
         del calendar.occupied[5][10]
         m = meeting()
@@ -329,7 +321,7 @@ class TestCalendarIsBusy:
 
 # -------------- Section 5: clear schedule --------------
 
-class TestCalendarClear_ClearGetRemove:
+class TestCalendarClear:
 
     # UT88: Test that clearing the schedule deletes meetings
     # Expected outcome: Date is cleared and is_busy is reset to false
@@ -348,11 +340,11 @@ class TestCalendarClear_ClearGetRemove:
 
     # UT90: Test that schedule clears only affect the selected date
     # Expected outcome: Schedule clear only applies to the selected date
-    def test_clear_schedule_only_affects_selected_date(self, cal):
+    def test_clear_schedule_only_affects_selected_date(self, calendar):
         other = meeting(day=11)
-        cal.add_meeting(other)
-        cal.clear_schedule(5, 10)
-        assert cal.occupied[5][11] == [other]
+        calendar.add_meeting(other)
+        calendar.clear_schedule(5, 10)
+        assert calendar.occupied[5][11] == [other]
 
 # -------------- Section 5: print agenda --------------
 
